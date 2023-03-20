@@ -52,9 +52,10 @@
 					<label style="color:black" for="floatingNumber">Fecha</label>
 				</div>
 
-				<div class="row">
+				<div class="form-group form-floating mb-3">
 					<button class="w-100 btn btn-lg btn-primary btn-success" onclick="guardar()" id="guardar" type="submit">Guardar cambios</button>
-					<button class="w-100 btn btn-lg btn-primary btn-danger" onclick="{{ route('home')}}" id="volver" type="submit">Volver</button>
+					<br>
+					<button class="w-100 btn btn-lg btn-primary btn-danger" onclick="volver()" id="volver" type="submit">Volver</button>
 				</div>
 				<p class="mt-5 mb-3 text-muted">&copy; {{ date('Y') }}</p>
 			</div>
@@ -64,24 +65,6 @@
 </div>
 
 <script>
-
-	function listarComuna() {
-		$.ajax({
-			type: "GET",
-			success: function(response) {
-				$.each(response.data, function(indice, fila) {
-					$('#comuna').append("<option id='idComuna' value='" + fila.id + "'>" + fila.comu_nombre + "</option>")
-				});
-			},
-			error: function(xhr, status) {
-				swal.fire({
-					icon: 'error',
-					title: 'Error',
-					text: 'no se cargan las comunas',
-				});
-			}
-		});
-	}
 
 	function cargarParametros(id) {
 		if(id != 0){
@@ -163,6 +146,11 @@
 				});
 			}
 		});
+	}
+
+	public function volver()
+	{
+		window.location = {{ route('home')}};
 	}
 
 	$(document).ready(function() {
