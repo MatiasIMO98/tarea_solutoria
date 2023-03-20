@@ -3,12 +3,12 @@
 @section('content')
 <div class='row'>
     <div class='col-12'>
-        <div  style="padding-bottom: 3%; ">
-            <h3 class="display-3" style="color:#ffc107;text-align:left">Información Histórica</h3>
+        <div  style="padding-bottom: 1%; ">
+            <h3 class="display-3" style="color:#ffc107;text-align:center">Información Histórica</h3>
         </div>
-        <div id="app" class="table-responsive h-80 w-80 flex items-center justify-center">
+        <div id="app" style="padding: 0% 5%" class="table-responsive h-80 w-80 flex items-center justify-center">
             <table id='tablaIndicadores' class="table table-bordered" style="color:antiquewhite">
-                <thead>
+                <thead style="background:#ffc107; color:black">
                     <tr>
                         <th>Nombre</th>
                         <th>Codigo</th>
@@ -22,20 +22,32 @@
 
                 </tbody>
             </table>
-            <div id="pagination" data-url="{{ route('pagination') }}">
-            </div>
+            <div id="pagination" data-url="{{ route('pagination') }}"> </div>
         </div>
 
-        <br> <br> <br> <br> <br> <br> <br> <br>
+        <br> <br> <br>
 
-        <div style="padding-bottom: 3%">
-            <h1 class="display-3" style="color:#ffc107">Datos Graficados</h1>
+        <div style="padding-bottom: 1%">
+            <h1 class="display-3" style="color:#ffc107;text-align:center">Datos Graficados</h1>
         </div>
 
-        <div class='container mt-5'>
-            <div class="row">
+        <div class='container mt-5' style="padding-bottom: 3%">
+            <div class="row" id='filtro' style="align-items: left">
                 <div class="col">
-                    <div id="grafico"></div>
+                    <div class="form-group form-floating mb-3">
+                        <input id="fechaDesde" type="date" class="form-control" required="required" autofocus>
+                        <label style="color:black" for="floatingDate">Desde</label>
+                    </div>
+                </div>
+                <br>
+                <div class="col">
+                    <div class="form-group form-floating mb-3">
+                        <input id="fechaHasta" type="date" class="form-control" required="required" autofocus>
+                        <label style="color:black" for="floatingDate">Hasta</label>
+                    </div>
+                </div>
+                <div id="grafico">
+
                 </div>
             </div>
         </div>
@@ -87,10 +99,10 @@
                             "<td>"+item.valorIndicador+"</td>"+
                             "<td>"+item.fechaIndicador+"</td>"+
                             "<td>"+
-                                "<button onclick='formulario("+ item.id+")' type='button' class='btn btn-success btn-outline-warning' id='modificar"+i+"'>"+
+                                "<button onclick='formulario("+ item.id+")' type='button' class='btn btn-primary btn-outline-success' id='modificar"+i+"'>"+
                                     "<span style='color:white' class='glyphicon glyphicon-edit'>Modificar</span>"+
                                 "</button>"+"  "+
-                                "<button type='button' class='btn btn-danger btn-outline-light' id='eliminar"+i+"'>"+
+                                "<button onclick='borrar("+ item.id+")' type='button' class='btn btn-danger btn-outline-light' id='eliminar"+i+"'>"+
                                     "<span class='glyphicon glyphicon-tras'>Eliminar</span>"+
                                 "</button>"+
                             "</td>"+

@@ -1,32 +1,26 @@
-@extends('layouts.head')
+@extends('layout')
 
+@section('content')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 
 
 <div class="container contenedorMayor">
 	<div class="row">
-		<div class="col-md-3 register-left">
-			<div class="col">
-				<br><br>
-				{{-- Imagen --}}
-			</div>
-		</div>
-		<div class="col-md-9 register-right" style="padding-left: 7%">
+		<div class="col-md-9 register-right">
 			@csrf
 
 			{{-- Contenedor --}}
 			<div class="tab-pane fade show active" id="trabajador" role="tabpanel" aria-labelledby="home-tab">
 				<input type="hidden" name="tipoUsuario" value="1" />
 
-				<h1 class="h3 mb-3 fw-normal p-4">Indicador</h1>
+				<div style="padding-bottom: 3%">
+					<h1 class="display-3" style="color:#ffc107;text-align:center">Indicador</h1>
+				</div>
 
 				<div class="form-group form-floating mb-3">
 					<input id="nombre" type="text" class="form-control" name="nombre" value="{{ old('nombre') }}" placeholder="Juan Perez"
 						required="required" autofocus>
-					<label for="floatingName">Nombre</label>
-					@if ($errors->has('nombre'))
-						<span class="text-danger text-left">{{ $errors->first('nombre') }}</span>
-					@endif
+					<label style="color:black" for="floatingName">Nombre</label>
 				</div>
 
 				<div class="row">
@@ -34,20 +28,14 @@
 						<div class="form-group form-floating mb-3">
 							<input id="codigo" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Juan Perez"
 								required="required" autofocus>
-							<label for="floatingName">Código</label>
-							@if ($errors->has('name'))
-								<span class="text-danger text-left">{{ $errors->first('name') }}</span>
-							@endif
+							<label style="color:black" for="floatingName">Código</label>
 						</div>
 					</div>
 					<div class="col">
 						<div class="form-group form-floating mb-3">
 							<input id="unidadMedida" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Juan Perez"
 								required="required" autofocus>
-							<label for="floatingName">Unidad de medida</label>
-							@if ($errors->has('name'))
-								<span class="text-danger text-left">{{ $errors->first('name') }}</span>
-							@endif
+							<label style="color:black" for="floatingName">Unidad de medida</label>
 						</div>
 					</div>
 				</div>
@@ -55,23 +43,19 @@
 				<div class="form-group form-floating mb-3">
 					<input id="valor" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Juan Perez"
 						required="required" autofocus>
-					<label for="floatingNumber">Valor</label>
-					@if ($errors->has('name'))
-						<span class="text-danger text-left">{{ $errors->first('name') }}</span>
-					@endif
+					<label style="color:black" for="floatingNumber">Valor</label>
 				</div>
 
 				<div class="form-group form-floating mb-3">
 					<input id="fecha" type="date" class="form-control" name="name" value="{{ old('name') }}" placeholder="Juan Perez"
 						required="required" autofocus>
-					<label for="floatingNumber">Fecha</label>
-					@if ($errors->has('name'))
-						<span class="text-danger text-left">{{ $errors->first('name') }}</span>
-					@endif
+					<label style="color:black" for="floatingNumber">Fecha</label>
 				</div>
 
-				<button class="w-100 btn btn-lg btn-primary" onclick="guardar()" id="registrar" type="submit">Guardar cambios</button>
-
+				<div class="row">
+					<button class="w-100 btn btn-lg btn-primary btn-success" onclick="guardar()" id="guardar" type="submit">Guardar cambios</button>
+					<button class="w-100 btn btn-lg btn-primary btn-danger" onclick="{{ route('home')}}" id="volver" type="submit">Volver</button>
+				</div>
 				<p class="mt-5 mb-3 text-muted">&copy; {{ date('Y') }}</p>
 			</div>
 		</div>
@@ -99,55 +83,25 @@
 		});
 	}
 
-	function ingresar(email, pass) {
-		$.ajax({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				},
-				type: "post",
+	function cargarParametros(id) {
+		if(id != 0){
+			$.ajax({
+				type: "GET",
+				url: "{{ route('mostrar') }}",
 				data: {
-					"_token": "{{ csrf_token() }}",
-					'email': email,
-					'pass': pass,
+					"id": id,
 				},
 				success: function(response) {
-					if (response.success == true) {
-						window.location = "{{ route('home') }}"
-					} else {
-						Swal.fire({
-							icon: 'error',
-							title: 'Error',
-							text: 'Su información no es válida',
-						})
-					}
+					$('#nombre').val(response.nombreIndicador);
+					$('#codigo').val(response.codigoIndicador);
+					$('#unidadMedida').val(response.unidadMedidaIndicador);
+					$('#valor').val(response.valorIndicador);
+					$('#fecha').val(response.fechaIndicador);
 				},
 				error: function(xhr, status) {
-					Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: 'Su información no es válida',
-					})
 				}
 			});
-	}
-
-	function cargarParametros(id) {
-		$.ajax({
-			type: "GET",
-			url: "{{ route('mostrar') }}",
-			data: {
-				"id": id,
-			},
-			success: function(response) {
-				$('#nombre').val(response.nombreIndicador);
-				$('#codigo').val(response.codigoIndicador);
-				$('#unidadMedida').val(response.unidadMedidaIndicador);
-				$('#valor').val(response.valorIndicador);
-				$('#fecha').val(response.fechaIndicador);
-			},
-			error: function(xhr, status) {
-			}
-		});
+		}
 	}
 
 	function guardar() {
@@ -191,14 +145,20 @@
 						'fechaIndicador': fecha,
 					}),
 					success: function(response) {
-						
+						Swal.fire({
+							icon: 'success',
+							title: 'Exito',
+							text: 'Se ha editado correctamente',
+						}).then((result) => {
+							window.location = "{{ route('home') }}"
+						});
 					},
 					error: function(xhr, status) {
 						Swal.fire({
 							icon: 'error',
 							title: 'Error',
 							text: 'No se pudo editar el indicador',
-						})
+						});
 					}
 				});
 			}
@@ -211,3 +171,5 @@
     });
 	
 </script>
+
+@endsection
