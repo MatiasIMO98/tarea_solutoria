@@ -6,7 +6,7 @@
         <div  style="padding-bottom: 1%; ">
             <h3 class="display-3" style="color:#ffc107;text-align:center">Información Histórica</h3>
         </div>
-        <div id="app" style="padding: 0% 5%" class="table-responsive h-80 w-80 flex items-center justify-center">
+        <div id="app" style="padding: 0% 5%" class=" h-80 w-80 flex items-center justify-center">
             <table id='tablaIndicadores' class="table table-bordered" style="color:antiquewhite">
                 <thead style="background:#ffc107; color:black">
                     <tr>
@@ -23,6 +23,12 @@
                 </tbody>
             </table>
             <div id="pagination" data-url="{{ route('pagination') }}"> </div>
+            
+        </div> 
+        <div style="padding-right: 70%">
+            <button onclick='formulario(0)' type='button' class='btn btn-success btn-outline-success' id='crear'>
+                <span style='color:white' class='glyphicon glyphicon-edit'>Agregar indicador</span>
+            </button>
         </div>
 
         <br> <br> <br>
@@ -118,6 +124,47 @@
         window.location.href = "/formulario?id="+id
     }
 
+    function borrar(id){
+        Swal.fire({
+			title: 'Está seguro?',
+			text: "Recuerde verificar la información",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#red',
+			cancelButtonColor: '#yellow',
+			cancelButtonText: 'Cancelar',
+			confirmButtonText: 'Eliminar'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					type: "post",
+					url: "{{ route('borrar') }}",
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify({ 
+						'id': id,
+					}),
+					success: function(response) {
+						Swal.fire({
+							icon: 'success',
+							title: 'Exito',
+							text: 'Se ha eliminado correctamente correctamente',
+						}).then((result) => {
+							window.location = "{{ route('home') }}"
+						});
+					},
+					error: function(xhr, status) {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'No se pudo eliminar el indicador',
+						});
+					}
+				});
+			}
+		});
+    }
+
     $(document).ready(function() {
         cargarDatos(1);
     });
@@ -136,7 +183,7 @@
 
         yAxis: {
             title: {
-                text: 'UF (Pesos)'
+                text: 'Valor (Pesos)'
             }
         },
 
@@ -163,7 +210,7 @@
 
         series: [
             {
-                name: 'Installation & Developers',
+                name: 'Unidad de fomento (UF)',
                 data: [43934, 48656, 65165, 81827, 112143, 142383,
                     171533, 165174, 155157, 161454, 154610]
             }],

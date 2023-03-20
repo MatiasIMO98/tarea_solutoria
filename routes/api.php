@@ -23,8 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/token', [IndicadorController::class, 'obtenerToken']);
 
 Route::get('/show', [IndicadorController::class, 'show'])->name('mostrar');
-Route::delete('/destroy', [IndicadorController::class, 'destroy'])->name('borrar');
-Route::put('/create', [IndicadorController::class, 'create'])->name('crear');
+Route::post('/destroy', [IndicadorController::class, 'destroy'])->name('borrar');
+Route::post('/create', [IndicadorController::class, 'create'])->name('crear');
 Route::post('/edit', [IndicadorController::class, 'edit'])->name('guardar');
 
 Route::get('/getTableData', [IndicadorController::class, 'getTableData'])->name('getTableData');

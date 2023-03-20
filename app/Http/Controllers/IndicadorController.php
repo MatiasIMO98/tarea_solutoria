@@ -86,10 +86,12 @@ class IndicadorController extends Controller
         return $this->successResponse('','Editado exitosamente');
     }
 
-    public function destroy($id)
+    public function destroy($request)
     {
-        Indicador::destroy($id);
-        return json_encode(['msg' => 'removed']);
+        $ind = Indicador::find($request->id);
+        if ($ind->delete()) {
+            return $this->successResponse('Datos eliminados correctamente',$ind);
+        }
     }
 
     // private function ingresarDatos($data, Indicador $ind = new Indicador())

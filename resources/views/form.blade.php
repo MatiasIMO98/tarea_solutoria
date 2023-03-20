@@ -4,7 +4,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 
 
-<div class="container contenedorMayor">
+<div class="container contenedorMayor align-center">
 	<div class="row">
 		<div class="col-md-9 register-right">
 			@csrf
@@ -54,7 +54,7 @@
 
 				<div class="form-group form-floating mb-3">
 					<button class="w-100 btn btn-lg btn-primary btn-success" onclick="guardar()" id="guardar" type="submit">Guardar cambios</button>
-					<br>
+					<br><br>
 					<button class="w-100 btn btn-lg btn-primary btn-danger" onclick="volver()" id="volver" type="submit">Volver</button>
 				</div>
 				<p class="mt-5 mb-3 text-muted">&copy; {{ date('Y') }}</p>
@@ -131,7 +131,7 @@
 						Swal.fire({
 							icon: 'success',
 							title: 'Exito',
-							text: 'Se ha editado correctamente',
+							text: 'Se ha guardado correctamente',
 						}).then((result) => {
 							window.location = "{{ route('home') }}"
 						});
@@ -140,7 +140,7 @@
 						Swal.fire({
 							icon: 'error',
 							title: 'Error',
-							text: 'No se pudo editar el indicador',
+							text: 'No se pudo guardar el indicador',
 						});
 					}
 				});
@@ -148,9 +148,9 @@
 		});
 	}
 
-	public function volver()
+	function volver()
 	{
-		window.location = {{ route('home')}};
+		window.location = "{{ route('home')}}";
 	}
 
 	$(document).ready(function() {
